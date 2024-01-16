@@ -7,17 +7,23 @@ const searchBtn = document.querySelector(".search button");
 
 const checkWeatherData = async function (city) {
   const response = await fetch(API_URL + city + `&appId=${API_KEY}`);
+
+  if (response.status == 404) {
+    const errorMsg = document.querySelector(".error");
+    errorMsg.style.display = "block";
+    document.getElementsByClassName(".weather").style.display = "none";
+  }
+
   const data = await response.json();
-  console.log(data);
 
   const cityDetail = document.querySelector(".city");
   const temperatureDetail = document.querySelector(".temperature");
   const humidityDetail = document.querySelector(".humidity");
   const windDetail = document.querySelector(".wind");
-  const weatherDetail = document.querySelector(".weather");
   const weatherImage = document.querySelector(".weather-icon");
 
-  weatherDetail.style.display = "block";
+  document.querySelector(".weather").style.display = "block";
+  document.querySelector(".error").style.display = "none";
 
   cityDetail.innerHTML = data.name;
   temperatureDetail.innerHTML = Math.round(data.main.temp) + "°c";
